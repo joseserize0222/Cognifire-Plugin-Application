@@ -1,5 +1,5 @@
 <idea-plugin>
-    <id>com.example.plugin</id>
+    <id>com.github.joseserize0222.cognifirepluginapplication</id>
     <name>Kotlin Stats</name>
     <vendor email="joseserize0222@gmail.com" url="https://github.com/joseserize0222">ExampleVendor</vendor>
 
