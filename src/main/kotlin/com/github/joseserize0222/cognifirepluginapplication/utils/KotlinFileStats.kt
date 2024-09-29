@@ -8,8 +8,11 @@ data class KotlinFileStats(
     val function: KtFunction?,
     val fileName: String
 ) {
-    fun getFunctionContent() : String {
-        return function?.text?.trim() ?: "None"
+    fun getFunctionContent(): String {
+        return function?.text?.let {
+            val lines = it.lines()
+            lines.first() + "\n" + lines.drop(1).joinToString("\n").trimIndent()
+        } ?: "None"
     }
 
     fun getFunctionLines() : Int {
