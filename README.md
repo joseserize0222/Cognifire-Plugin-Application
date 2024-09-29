@@ -1,51 +1,75 @@
-# Cognifire-Plugin-Application
+# ![about](https://github.com/joseserize0222/Cognifire-Plugin-Application/blob/main/src/main/resources/META-INF/pluginIcon.svg) IntelliJ IDEA Kotlin Stats Plugin
 
-![Build](https://github.com/joseserize0222/Cognifire-Plugin-Application/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
+This plugin offers a comprehensive analysis tool for Kotlin files within your IntelliJ IDEA environment. Built on the [intellij-platform-plugin-template](https://github.com/JetBrains/intellij-platform-plugin-template), this plugin provides real-time insights into your Kotlin source code, including line counts, TODO comment tracking, and detailed function analysis.
 
-## Template ToDo list
-- [x] Create a new [IntelliJ Platform Plugin Template][template] project.
-- [ ] Get familiar with the [template documentation][template].
-- [ ] Adjust the [pluginGroup](./gradle.properties) and [pluginName](./gradle.properties), as well as the [id](./src/main/resources/META-INF/plugin.xml) and [sources package](./src/main/kotlin).
-- [ ] Adjust the plugin description in `README` (see [Tips][docs:plugin-description])
-- [ ] Review the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html?from=IJPluginTemplate).
-- [ ] [Publish a plugin manually](https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html?from=IJPluginTemplate) for the first time.
-- [ ] Set the `MARKETPLACE_ID` in the above README badges. You can obtain it once the plugin is published to JetBrains Marketplace.
-- [ ] Set the [Plugin Signing](https://plugins.jetbrains.com/docs/intellij/plugin-signing.html?from=IJPluginTemplate) related [secrets](https://github.com/JetBrains/intellij-platform-plugin-template#environment-variables).
-- [ ] Set the [Deployment Token](https://plugins.jetbrains.com/docs/marketplace/plugin-upload.html?from=IJPluginTemplate).
-- [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
+## Features
 
-<!-- Plugin description -->
-This Fancy IntelliJ Platform Plugin is going to be your implementation of the brilliant ideas that you have.
+- **Kotlin File Statistics**: Displays the total number of lines and the number of lines containing TODO comments.
+- **Function Analysis**: Identifies and lists the longest function in terms of lines, along with its name and body content.
+- **Real-time Updates**: Automatically updates the displayed statistics as you make changes to the file or switch between files in the editor.
 
-This specific section is a source for the [plugin.xml](/src/main/resources/META-INF/plugin.xml) file which will be extracted by the [Gradle](/build.gradle.kts) during the build process.
+## Main Components
 
-To keep everything working, do not remove `<!-- ... -->` sections. 
-<!-- Plugin description end -->
+### `FileAnalyzerService.kt`
 
-## Installation
+- **Purpose**: The core of the plugin, responsible for analyzing Kotlin files.
+- **Implementation Details**:
+  - Utilizes IntelliJ's **PSI (Program Structure Interface)** to analyze and understand Kotlin files.
+  - **Listeners**: Listens for document changes and file selection events. When a change occurs, the statistics are automatically recalculated and updated via a `FileStatsListener`.
+  - **Key Functions**:
+    - `calculateStats(file: VirtualFile)`: Performs the analysis of a Kotlin file and returns a `KotlinFileStats` object, containing the total number of lines, TODO comment count, the longest function, and its content.
 
-- Using the IDE built-in plugin system:
-  
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "Cognifire-Plugin-Application"</kbd> >
-  <kbd>Install</kbd>
-  
-- Using JetBrains Marketplace:
+`FileAnalyzerService` is the central component that manages file analysis and real-time statistics updates. By leveraging PSI, it allows for deep analysis of Kotlin source code.
 
-  Go to [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID) and install it by clicking the <kbd>Install to ...</kbd> button in case your IDE is running.
+### `ProjectStatsPanel.kt`
 
-  You can also download the [latest release](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID/versions) from JetBrains Marketplace and install it manually using
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
+- **Purpose**: The user interface component that displays statistics within the IntelliJ IDEA panel.
+- **Implementation Details**:
+  - **Key Attributes**:
+    - `content`: The main panel content that displays the statistics.
+  - **Key Methods**:
+    - `callback(allStats: KotlinFileStats)`: Called when statistics are updated. It receives a `KotlinFileStats` object and refreshes the panel content with the latest data.
 
-- Manually:
+`ProjectStatsPanel` bridges the backend analysis with the graphical user interface, displaying real-time statistics for the currently selected Kotlin file.
 
-  Download the [latest release](https://github.com/joseserize0222/Cognifire-Plugin-Application/releases/latest) and install it manually using
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
+### `KotlinFileStats.kt`
 
+- **Purpose**: A container for the results of the Kotlin file analysis.
+- **Key Attributes**:
+  - `totalLines`: The total number of lines in the file.
+  - `todoLines`: The number of lines containing TODO comments.
+  - `function`: The longest function in the file.
+  - `fileName`: The name of the analyzed file.
+- **Key Methods**:
+  - `getFunctionContent()`: Returns the content of the longest function.
+  - `getFunctionLines()`: Returns the number of lines in the longest function.
+  - `getFunctionName()`: Returns the name of the longest function.
 
----
-Plugin based on the [IntelliJ Platform Plugin Template][template].
+This file encapsulates the data obtained from analyzing a Kotlin file and provides easy access to the calculated metrics.
 
-[template]: https://github.com/JetBrains/intellij-platform-plugin-template
-[docs:plugin-description]: https://plugins.jetbrains.com/docs/intellij/plugin-user-experience.html#plugin-description-and-presentation
+## General Architecture
+
+### 1. **PSI Utilization**:
+The plugin leverages **PSI (Program Structure Interface)** to analyze the syntactic structure of Kotlin files. This allows access to specific nodes like classes, functions, and expressions within the file.
+
+### 2. **Real-time Updates**:
+The plugin uses **listeners** to monitor file changes and automatically update the displayed statistics. These listeners are connected to events like document edits and file selection changes within the IntelliJ editor.
+
+### 3. **User Interface**:
+The `ProjectStatsPanel` panel updates in real-time, displaying precise and detailed information about the Kotlin file that is currently being edited or viewed.
+
+## Benefits for Developers
+
+- **Code Quality Monitoring**: Track TODO comments and large functions, helping identify areas that may need refactoring or extra attention.
+- **Efficient Navigation**: Quickly get an overview of the structure and complexity of a Kotlin file.
+- **Continuous Feedback**: Stay informed about the file’s metrics while developing, enabling better decision-making and code management.
+
+## Recent Changes
+
+- A system of **listeners** has been implemented to allow real-time updates to statistics as the user edits or switches files in the editor.
+- **Optimized Analysis**: The analysis now includes anonymous functions (lambdas) while excluding constructors and initialization blocks.
+- The system now uses the `FileAnalyzerService` component for analyzing Kotlin files, improving code modularity and scalability.
+
+## Acknowledgements
+
+This plugin was created using the [intellij-platform-plugin-template](https://github.com/JetBrains/intellij-platform-plugin-template). Special thanks to JetBrains for providing robust tools and templates for plugin development.
