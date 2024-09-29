@@ -1,0 +1,1 @@
+val myLambda = { println("This is a lambda inside a class") }
