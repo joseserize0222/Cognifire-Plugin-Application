@@ -1,6 +1,5 @@
-package com.github.joseserize0222.cognifirepluginapplication
+package com.github.joseserize0222.cognifirepluginapplication.toolWindow
 
-import com.github.joseserize0222.cognifirepluginapplication.ProjectStatsPanel
 import com.intellij.openapi.project.DumbAware
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow

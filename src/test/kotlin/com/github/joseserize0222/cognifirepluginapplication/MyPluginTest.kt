@@ -1,39 +1,65 @@
 package com.github.joseserize0222.cognifirepluginapplication
 
-import com.intellij.ide.highlighter.XmlFileType
+import com.github.joseserize0222.cognifirepluginapplication.services.FileAnalyzerService
+import com.github.joseserize0222.cognifirepluginapplication.utils.KotlinFileStats
 import com.intellij.openapi.components.service
-import com.intellij.psi.xml.XmlFile
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.testFramework.TestDataPath
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import com.intellij.util.PsiErrorElementUtil
-import com.github.joseserize0222.cognifirepluginapplication.services.MyProjectService
 
 @TestDataPath("\$CONTENT_ROOT/src/test/testData")
 class MyPluginTest : BasePlatformTestCase() {
 
-    fun testXMLFile() {
-        val psiFile = myFixture.configureByText(XmlFileType.INSTANCE, "<foo>bar</foo>")
-        val xmlFile = assertInstanceOf(psiFile, XmlFile::class.java)
+    private lateinit var fileAnalyzerService: FileAnalyzerService
 
-        assertFalse(PsiErrorElementUtil.hasErrors(project, xmlFile.virtualFile))
-
-        assertNotNull(xmlFile.rootTag)
-
-        xmlFile.rootTag?.let {
-            assertEquals("foo", it.name)
-            assertEquals("bar", it.value.text)
-        }
+    override fun setUp() {
+        super.setUp()
+        fileAnalyzerService = project.service<FileAnalyzerService>()
     }
 
-    fun testRename() {
-        myFixture.testRename("foo.xml", "foo_after.xml", "a2")
+    fun testNoFunction() {
+        val file = myFixture.configureByFile("NoFunction.kt").virtualFile
+        val stats = analyzeFile(file)
+        assertEquals(10, stats.totalLines)
+        assertEquals(0, stats.todoLines)
+        assertEquals("None", stats.getFunctionName())
     }
 
-    fun testProjectService() {
-        val projectService = project.service<MyProjectService>()
-
-        assertNotSame(projectService.getRandomNumber(), projectService.getRandomNumber())
+    fun testNotNamedFunction() {
+        val file = myFixture.configureByFile("NotNamedFunction.kt").virtualFile
+        val stats = analyzeFile(file)
+        assertEquals(1, stats.totalLines)
+        assertEquals(0, stats.todoLines)
+        assertEquals("None", stats.getFunctionName())
     }
 
-    override fun getTestDataPath() = "src/test/testData/rename"
+    fun testFunction() {
+        val file = myFixture.configureByFile("Function.kt").virtualFile
+        val stats = analyzeFile(file)
+        assertEquals(34, stats.totalLines)
+        assertEquals(0, stats.todoLines)
+        assertEquals("getBst", stats.getFunctionName())
+    }
+
+    fun testInnerFunction() {
+        val file = myFixture.configureByFile("InnerFunction.kt").virtualFile
+        val stats = analyzeFile(file)
+        assertEquals(24, stats.totalLines)
+        assertEquals(0, stats.todoLines)
+        assertEquals("innerFunction", stats.getFunctionName())
+    }
+
+    fun testTODOLines() {
+        val file = myFixture.configureByFile("TODOLines.kt").virtualFile
+        val stats = analyzeFile(file)
+        assertEquals(5, stats.totalLines)
+        assertEquals(4, stats.todoLines)
+        assertEquals("None", stats.getFunctionName())
+    }
+
+    private fun analyzeFile(file: VirtualFile) : KotlinFileStats {
+        return fileAnalyzerService.calculateStats(file)
+    }
+
+    override fun getTestDataPath() = "src/test/testData/"
 }

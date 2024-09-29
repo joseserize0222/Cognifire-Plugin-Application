@@ -1,5 +1,7 @@
-package com.github.joseserize0222.cognifirepluginapplication
+package com.github.joseserize0222.cognifirepluginapplication.services
 
+import com.github.joseserize0222.cognifirepluginapplication.utils.FileStatsListener
+import com.github.joseserize0222.cognifirepluginapplication.utils.KotlinFileStats
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.editor.EditorFactory
@@ -14,17 +16,18 @@ import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiManager
 import com.intellij.psi.util.PsiTreeUtil
 import org.jetbrains.kotlin.psi.KtFunction
+import org.jetbrains.kotlin.psi.KtNamedFunction
 
 @Service(Service.Level.PROJECT)
 class FileAnalyzerService(private val project: Project) : Disposable {
     private val psiManager: PsiManager = PsiManager.getInstance(project)
-    private val listeners = mutableListOf<FileStatsListener>()
+    private var listener: FileStatsListener? = null
 
     init {
         setupListeners()
     }
 
-    private fun calculateStats(file: VirtualFile) : KotlinFileStats {
+    fun calculateStats(file: VirtualFile) : KotlinFileStats {
         val ktFile = psiManager.findFile(file) ?:  return KotlinFileStats(0, 0, null, "None")
         val lines = ktFile.text.lines()
         val totalLines = lines.size
@@ -32,7 +35,7 @@ class FileAnalyzerService(private val project: Project) : Disposable {
         var longestFunction: KtFunction? = null
         var maxFunctionLines = 0
 
-        val functions = PsiTreeUtil.findChildrenOfType(ktFile, KtFunction::class.java)
+        val functions = PsiTreeUtil.findChildrenOfType(ktFile, KtNamedFunction::class.java)
         for (function in functions) {
             if (function.text.lines().size > maxFunctionLines) {
                 maxFunctionLines = function.text.lines().size
@@ -58,17 +61,15 @@ class FileAnalyzerService(private val project: Project) : Disposable {
         })
     }
 
-    fun addListener(listener: FileStatsListener) {
-        listeners.add(listener)
+    fun addListener(listenerClass: FileStatsListener) {
+        listener = listenerClass
         updateStats()
     }
 
     fun updateStats() {
         val virtualFile = FileEditorManager.getInstance(project).selectedFiles.firstOrNull() ?: return
         val allStats = calculateStats(virtualFile)
-        for (listener in listeners) {
-            listener.callback(allStats)
-        }
+        listener?.callback(allStats) ?: return
     }
 
     override fun dispose() {}

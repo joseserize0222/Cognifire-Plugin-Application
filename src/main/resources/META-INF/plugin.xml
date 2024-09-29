@@ -1,18 +1,22 @@
-<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.joseserize0222.cognifirepluginapplication</id>
-    <name>Cognifire-Plugin-Application</name>
-    <vendor>joseserize0222</vendor>
+    <id>com.example.plugin</id>
+    <name>Kotlin Stats</name>
+    <vendor email="joseserize0222@gmail.com" url="https://github.com/joseserize0222">ExampleVendor</vendor>
 
+    <description><![CDATA[
+        A simple plugin to gather and display statistics about Kotlin files, such as total line count, lines with TODO, and the longest function.
+    ]]></description>
+
+    <depends>org.jetbrains.kotlin</depends>
     <depends>com.intellij.modules.platform</depends>
 
-    <resource-bundle>messages.MyBundle</resource-bundle>
-
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.joseserize0222.cognifirepluginapplication.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
+        <!-- Register the tool window -->
+        <toolWindow doNotActivateOnStart="false"
+                    id="Kotlin Stats ToolWindow"
+                    factoryClass="com.github.joseserize0222.cognifirepluginapplication.toolWindow.StatsToolWindowFactory"
+                    anchor="right"
+                    icon = "AllIcons.Toolwindows.ToolWindowJsonPath"
+        />
     </extensions>
-
-    <applicationListeners>
-        <listener class="com.github.joseserize0222.cognifirepluginapplication.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
-    </applicationListeners>
 </idea-plugin>

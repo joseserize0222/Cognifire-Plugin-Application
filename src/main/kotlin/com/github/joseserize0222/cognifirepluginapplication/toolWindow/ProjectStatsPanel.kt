@@ -1,4 +1,7 @@
-package com.github.joseserize0222.cognifirepluginapplication
+package com.github.joseserize0222.cognifirepluginapplication.toolWindow
+import com.github.joseserize0222.cognifirepluginapplication.services.FileAnalyzerService
+import com.github.joseserize0222.cognifirepluginapplication.utils.FileStatsListener
+import com.github.joseserize0222.cognifirepluginapplication.utils.KotlinFileStats
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.util.ui.JBUI
