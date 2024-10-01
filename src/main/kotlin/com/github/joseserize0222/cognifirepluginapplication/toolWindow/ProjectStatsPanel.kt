@@ -9,6 +9,7 @@ import com.intellij.openapi.editor.colors.EditorColorsManager
 import com.intellij.openapi.fileTypes.FileTypeManager
 import com.intellij.openapi.project.Project
 import com.intellij.ui.EditorTextField
+import com.intellij.ui.components.JBPanel
 import com.intellij.ui.components.JBScrollPane
 import java.awt.BorderLayout
 import java.awt.Font
@@ -18,7 +19,7 @@ class ProjectStatsPanel(project: Project) : FileStatsListener {
     val content: JComponent
     private val editorField: EditorTextField
     init {
-        val panel = JPanel(BorderLayout())
+        val panel = JBPanel<JBPanel<*>>(BorderLayout())
         val fileType = FileTypeManager.getInstance().getFileTypeByExtension("kt")
         editorField = EditorTextField("", project, fileType).apply {
             isViewer = true
