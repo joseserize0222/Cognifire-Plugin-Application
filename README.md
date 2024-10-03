@@ -81,7 +81,7 @@ The `ProjectStatsPanel` panel updates in real-time, displaying precise and detai
 - A system of **listeners** has been implemented to allow real-time updates to statistics as the user edits or switches files in the editor.
 - **Optimized Analysis**: The analysis now includes anonymous functions (lambdas) while excluding constructors and initialization blocks.
 - The system now uses the `FileAnalyzerService` component for analyzing Kotlin files, improving code modularity and scalability.
-
+- Changes to the UI now uses EditorTextField to display the statistics.
 ## Acknowledgements
 
 This plugin was created using the [intellij-platform-plugin-template](https://github.com/JetBrains/intellij-platform-plugin-template). Special thanks to JetBrains for providing robust tools and templates for plugin development.
