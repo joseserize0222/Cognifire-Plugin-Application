@@ -82,6 +82,29 @@ The `ProjectStatsPanel` panel updates in real-time, displaying precise and detai
 - **Optimized Analysis**: The analysis now includes anonymous functions (lambdas) while excluding constructors and initialization blocks.
 - The system now uses the `FileAnalyzerService` component for analyzing Kotlin files, improving code modularity and scalability.
 - Changes to the UI now uses EditorTextField to display the statistics.
+
+
+## Installation (manually)
+
+1.Install Git;
+
+2.Clone the repo using `ssh`: `git clone git@github.com:joseserize0222/Cognifire-Plugin-Application.git`
+
+3.Open the basic_plugin directory in a console
+
+4.Build the plugin: `gradlew buildPlugin`
+
+5.Run the plugin: `gradlew runIde`
+
+## Installation by latest release
+
+1.Go to Releases, and click tags, then you will find a .zip with the latest uploaded version of the plugin.
+
+2.Install the plugin from disk in IntelliJ Idea, for more information you can click <a href="https://www.jetbrains.com/help/idea/managing-plugins.html#install_plugin_from_disk"> here </a>
+
+Note(This could not be up to date)
+
+
 ## Acknowledgements
 
 This plugin was created using the [intellij-platform-plugin-template](https://github.com/JetBrains/intellij-platform-plugin-template). Special thanks to JetBrains for providing robust tools and templates for plugin development.
