@@ -8,7 +8,9 @@ This plugin offers a comprehensive analysis tool for Kotlin files within your In
 - **Function Analysis**: Identifies and lists the longest function in terms of lines, along with its name and body content.
 - **Real-time Updates**: Automatically updates the displayed statistics as you make changes to the file or switch between files in the editor.
 - <img src="./src/data/Editing%20the%20file%20audio%20removed.gif" alt="Modifying the current file">
+- <img src="./src/data/Switching%20files%20and%20resizing%20the%20windows.gif" alt="Switching between files and window resizing">
 - **Theme friendly**: Smartly adapts the UI to be compatible with your theme.
+- <img src="./src/data/Changing%20the%20theme.gif" alt="Changing the theme">
 
 ## Main Components
 
