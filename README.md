@@ -100,7 +100,7 @@ The `ProjectStatsPanel` panel updates in real-time, displaying precise and detai
 
 1.Go to Releases, and click tags, then you will find a .zip with the latest uploaded version of the plugin.
 
-2.Install the plugin from disk in IntelliJ Idea, for more information you can click <a href="https://www.jetbrains.com/help/idea/managing-plugins.html#install_plugin_from_disk"> here </a>
+2.Install the plugin from disk in IntelliJ IDEA, for more information you can click <a href="https://www.jetbrains.com/help/idea/managing-plugins.html#install_plugin_from_disk"> here </a>
 
 Note(This could not be up to date)
 
