@@ -23,7 +23,6 @@ class FileAnalyzerService(private val project: Project) : Disposable {
     private val psiManager: PsiManager = PsiManager.getInstance(project)
     private var listener: FileStatsListener? = null
     private val regexTODO =  Regex("""TODO\s*\("?.*"?\)""")
-    val parahacercommit: Int = 0
     init {
         setupListeners()
     }

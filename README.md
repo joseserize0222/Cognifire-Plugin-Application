@@ -7,6 +7,8 @@ This plugin offers a comprehensive analysis tool for Kotlin files within your In
 - **Kotlin File Statistics**: Displays the total number of lines and the number of lines containing TODO comments.
 - **Function Analysis**: Identifies and lists the longest function in terms of lines, along with its name and body content.
 - **Real-time Updates**: Automatically updates the displayed statistics as you make changes to the file or switch between files in the editor.
+- <img src="./src/data/Editing%20the%20file%20audio%20removed.gif" alt="Modifying the current file">
+- **Theme friendly**: Smartly adapts the UI to be compatible with your theme.
 
 ## Main Components
 
