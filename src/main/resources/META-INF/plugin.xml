@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>cognifire.plugin.application</id>
-    <name>Kotlin Stats</name>
+    <name>Cognifire File Statistics</name>
     <vendor email="joseserize0222@gmail.com" url="https://github.com/joseserize0222">ExampleVendor</vendor>
 
     <description><![CDATA[
@@ -11,9 +11,8 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Register the tool window -->
         <toolWindow doNotActivateOnStart="false"
-                    id="Kotlin Stats ToolWindow"
+                    id="Cognifire File Statistics"
                     factoryClass="com.github.joseserize0222.cognifirepluginapplication.toolWindow.StatsToolWindowFactory"
                     anchor="right"
                     icon = "AllIcons.Toolwindows.ToolWindowJsonPath"

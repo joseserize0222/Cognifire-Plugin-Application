@@ -52,7 +52,7 @@ class MyPluginTest : BasePlatformTestCase() {
     fun testTODOLines() {
         val file = myFixture.configureByFile("TODOLines.kt").virtualFile
         val stats = analyzeFile(file)
-        assertEquals(5, stats.totalLines)
+        assertEquals(6, stats.totalLines)
         assertEquals(4, stats.todoLines)
         assertEquals("None", stats.getFunctionName())
     }

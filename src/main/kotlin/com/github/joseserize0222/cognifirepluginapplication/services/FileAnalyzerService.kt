@@ -22,7 +22,8 @@ import org.jetbrains.kotlin.psi.KtNamedFunction
 class FileAnalyzerService(private val project: Project) : Disposable {
     private val psiManager: PsiManager = PsiManager.getInstance(project)
     private var listener: FileStatsListener? = null
-
+    private val regexTODO =  Regex("""TODO\s*\("?.*"?\)""")
+    val parahacercommit: Int = 0
     init {
         setupListeners()
     }
@@ -31,7 +32,7 @@ class FileAnalyzerService(private val project: Project) : Disposable {
         val ktFile = psiManager.findFile(file) ?:  return KotlinFileStats(0, 0, null, "None")
         val lines = ktFile.text.lines()
         val totalLines = lines.size
-        val totalTODOLines = lines.count { it.contains("TODO") }
+        val totalTODOLines = lines.count { it.contains(regexTODO) }
         var longestFunction: KtFunction? = null
         var maxFunctionLines = 0
 
@@ -42,7 +43,6 @@ class FileAnalyzerService(private val project: Project) : Disposable {
                 longestFunction = function
             }
         }
-
         return KotlinFileStats(totalLines, totalTODOLines, longestFunction, file.name)
     }
 
