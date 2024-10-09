@@ -24,6 +24,7 @@ class ProjectStatsPanel(project: Project) : FileStatsListener {
         editorField = EditorTextField("", project, fileType).apply {
             isViewer = true
             font = Font("JetBrains Mono", Font.PLAIN, 12)
+            text = "Please select a file for statistics."
             setOneLineMode(false)
             setAutoscrolls(true)
         }
