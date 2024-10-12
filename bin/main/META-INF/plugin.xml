@@ -1,0 +1,21 @@
+<idea-plugin>
+    <id>cognifire.plugin.application</id>
+    <name>Cognifire File Statistics</name>
+    <vendor email="joseserize0222@gmail.com" url="https://github.com/joseserize0222">ExampleVendor</vendor>
+
+    <description><![CDATA[
+        A simple plugin to gather and display statistics about Kotlin files, such as total line count, lines with TODO, and the longest function.
+    ]]></description>
+
+    <depends>org.jetbrains.kotlin</depends>
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow doNotActivateOnStart="false"
+                    id="Cognifire File Statistics"
+                    factoryClass="com.github.joseserize0222.cognifirepluginapplication.toolWindow.StatsToolWindowFactory"
+                    anchor="right"
+                    icon = "AllIcons.Toolwindows.ToolWindowJsonPath"
+        />
+    </extensions>
+</idea-plugin>

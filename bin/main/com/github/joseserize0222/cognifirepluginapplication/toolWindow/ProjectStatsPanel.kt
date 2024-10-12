@@ -3,7 +3,6 @@ import com.github.joseserize0222.cognifirepluginapplication.services.FileAnalyze
 import com.github.joseserize0222.cognifirepluginapplication.utils.FileStatsListener
 import com.github.joseserize0222.cognifirepluginapplication.utils.KotlinFileStats
 import com.intellij.ide.ui.LafManagerListener
-import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.colors.EditorColorsManager
@@ -16,7 +15,7 @@ import java.awt.BorderLayout
 import java.awt.Font
 import javax.swing.*
 
-class ProjectStatsPanel(project: Project) : FileStatsListener, Disposable {
+class ProjectStatsPanel(project: Project) : FileStatsListener {
     val content: JComponent
     private val editorField: EditorTextField
     init {
@@ -25,9 +24,9 @@ class ProjectStatsPanel(project: Project) : FileStatsListener, Disposable {
         editorField = EditorTextField("", project, fileType).apply {
             isViewer = true
             font = Font("JetBrains Mono", Font.PLAIN, 12)
+            text = "Please select a file for statistics."
             setOneLineMode(false)
             setAutoscrolls(true)
-            text = "Please select a File for showing statistics."
             this.addSettingsProvider { editor ->
                 val contentComponent = editor.contentComponent
                 contentComponent.border = BorderFactory.createEmptyBorder(10, 10, 10, 10)
@@ -36,7 +35,7 @@ class ProjectStatsPanel(project: Project) : FileStatsListener, Disposable {
         val scrollPane = JBScrollPane(editorField)
         panel.add(scrollPane, BorderLayout.CENTER)
         content = panel
-        ApplicationManager.getApplication().messageBus.connect(this).subscribe(
+        ApplicationManager.getApplication().messageBus.connect().subscribe(
             LafManagerListener.TOPIC, LafManagerListener {
                 updateEditorFieldTheme()
             }
@@ -63,6 +62,4 @@ class ProjectStatsPanel(project: Project) : FileStatsListener, Disposable {
             editorField.text = stats
         }
     }
-
-    override fun dispose() {}
 }

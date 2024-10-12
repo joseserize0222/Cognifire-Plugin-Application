@@ -13,7 +13,6 @@ class StatsToolWindowFactory: ToolWindowFactory, DumbAware {
         val statsPanel = ProjectStatsPanel(project)
         val contentFactory = ContentFactory.getInstance()
         val content = contentFactory.createContent(statsPanel.content, "", false)
-        content.setDisposer(statsPanel)
         toolWindow.contentManager.addContent(content)
     }
 }

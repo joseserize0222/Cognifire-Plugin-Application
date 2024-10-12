@@ -3,8 +3,6 @@ package com.github.joseserize0222.cognifirepluginapplication.services
 import com.github.joseserize0222.cognifirepluginapplication.utils.FileStatsListener
 import com.github.joseserize0222.cognifirepluginapplication.utils.KotlinFileStats
 import com.intellij.openapi.Disposable
-import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.application.ReadAction
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.editor.EditorFactory
 import com.intellij.openapi.editor.event.DocumentEvent
@@ -50,20 +48,14 @@ class FileAnalyzerService(private val project: Project) : Disposable {
     private fun setupListeners() {
         EditorFactory.getInstance().eventMulticaster.addDocumentListener(object : DocumentListener {
             override fun documentChanged(event: DocumentEvent) {
-                ApplicationManager.getApplication().invokeLater {
-                    if (!project.isDisposed) {
-                        PsiDocumentManager.getInstance(project).commitDocument(event.document)
-                        updateStats()
-                    }
-                }
+                PsiDocumentManager.getInstance(project).commitDocument(event.document)
+                updateStats()
             }
         }, this)
-        project.messageBus.connect(this).subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, object :
+        project.messageBus.connect().subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, object :
             FileEditorManagerListener {
             override fun selectionChanged(event: FileEditorManagerEvent) {
-                if (!project.isDisposed) {
-                    updateStats()
-                }
+                updateStats()
             }
         })
     }
@@ -74,13 +66,9 @@ class FileAnalyzerService(private val project: Project) : Disposable {
     }
 
     fun updateStats() {
-        ReadAction.run<Throwable> {
-            if (!project.isDisposed) {
-                val virtualFile = FileEditorManager.getInstance(project).selectedFiles.firstOrNull() ?: return@run
-                val allStats = calculateStats(virtualFile)
-                listener?.callback(allStats)
-            }
-        }
+        val virtualFile = FileEditorManager.getInstance(project).selectedFiles.firstOrNull() ?: return
+        val allStats = calculateStats(virtualFile)
+        listener?.callback(allStats) ?: return
     }
 
     override fun dispose() {}
