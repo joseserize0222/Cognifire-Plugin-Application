@@ -30,7 +30,12 @@ class ProjectStatsPanel(project: Project) : FileStatsListener, Disposable {
             text = "Please select a File for showing statistics."
             this.addSettingsProvider { editor ->
                 val contentComponent = editor.contentComponent
-                contentComponent.border = BorderFactory.createEmptyBorder(10, 10, 10, 10)
+                contentComponent.border = BorderFactory.createEmptyBorder(
+                    10,
+                    10,
+                    10,
+                    10
+                )
             }
         }
         val scrollPane = JBScrollPane(editorField)
@@ -55,7 +60,13 @@ class ProjectStatsPanel(project: Project) : FileStatsListener, Disposable {
             append("Kotlin File Stats for ${allStats.fileName}\n\n")
             append("All Lines: ${allStats.totalLines}\n")
             append("TODO Lines: ${allStats.todoLines}\n")
-            append("Longest Function: ${allStats.getFunctionName()} with ${allStats.getFunctionLines()} ${ if (allStats.getFunctionLines() == 1) "line" else "lines"}\n")
+            append("Longest Function: " +
+                    "${allStats.getFunctionName()} with " +
+                    "${allStats.getFunctionLines()} " +
+                    "${ if (allStats.getFunctionLines() == 1) 
+                            "line" 
+                        else 
+                        "lines"}\n")
             append("Body Expression:\n")
             append(allStats.getFunctionContent())
         }
